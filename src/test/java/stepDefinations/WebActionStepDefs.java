@@ -2,22 +2,27 @@ package stepDefinations;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import io.cucumber.java.en.Then;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.pageObjects.homePageObjects;
+import org.pageObjects.HomePageObjects;
 
-import static org.junit.Assert.assertEquals;
+import java.text.MessageFormat;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 
 public class WebActionStepDefs {
+
+    private static final Logger logger = LogManager.getLogger(WebActionStepDefs.class);
     WebDriver  driver;
-    homePageObjects hpo ;
+    HomePageObjects hpo ;
+
 
     public WebActionStepDefs() {
         this.driver = null;
-
-
     }
     @Given("^the user opens \"([^\"]*)\" browser$")
     public void userOpenBrowser(){
@@ -26,32 +31,47 @@ public class WebActionStepDefs {
          driver = new ChromeDriver();
         // to configure the path of the chromedriver.exe
         System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver\n");
-
-
-            
     }
-
-    @And("the user navigates to \"([^\"]*)\" url")
+    @And("^the user navigates to \"([^\"]*)\" url")
     public void theUserNavigatesToUrl(String url) {
         driver.get(url);
     }
 
-    @And("the user taps \"([^\"]*)\" page element")
+    @And("^the user taps \"([^\"]*)\" page element")
     public void theUserTapsPageElement(String elementName) {
+        try{
         hpo.clickWebElement(elementName);
-        
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("An unexpected exception occurred while attempting to tap web element \"{0}\"", elementName));
+            logger.debug(MessageFormat.format("Error message: \"{0}\"", e.getMessage()));
+            logger.debug(MessageFormat.format("Error cause: \"{0}\"", e.getCause()));
+            logger.debug(MessageFormat.format("Error localized message: \"{0}\"", e.getLocalizedMessage()));
+            e.printStackTrace();
+        }
     }
-
-    @And("the user types \"([^\"]*)\" into \"([^\"]*)\" page element")
+    @And("^the user types \"([^\"]*)\" into \"([^\"]*)\" page element")
     public void theUserTypesIntoPageElement(String textContent, String element) {
-
-        hpo.typeText(textContent,element);
+       try {
+           hpo.typeText(textContent, element);
+       } catch (Exception e) {
+           logger.error(MessageFormat.format("An unexpected exception occurred while attempting to type text into page element\"{0}\"", element));
+           logger.debug(MessageFormat.format("Error message: \"{0}\"", e.getMessage()));
+           logger.debug(MessageFormat.format("Error cause: \"{0}\"", e.getCause()));
+           logger.debug(MessageFormat.format("Error localized message: \"{0}\"", e.getLocalizedMessage()));
+           e.printStackTrace();
+       }
     }
-
-    @And("the user verifies that the text content of attribute of \"([^\"]*)\" page element \"([^\"]*)\" \"([^\"]*)\"$")
+    @And("^the user verifies that the text content of attribute of \"([^\"]*)\" page element \"([^\"]*)\" \"([^\"]*)\"$")
     public void theUserVerifiesThatTheTextContentOfAttributeOfPageElement(String element, String action, String expectedValue) {
-       hpo.verifyWebElementAttribute(element,action,expectedValue);
-
+        try{
+        assertThat(hpo.verifyWebElementAttribute(element,action,expectedValue)).isTrue();
+        } catch (Exception e) {
+            logger.error(MessageFormat.format("An unexpected exception occurred while attempting to verify the attributes of page element\"{0}\"", element));
+            logger.debug(MessageFormat.format("Error message: \"{0}\"", e.getMessage()));
+            logger.debug(MessageFormat.format("Error cause: \"{0}\"", e.getCause()));
+            logger.debug(MessageFormat.format("Error localized message: \"{0}\"", e.getLocalizedMessage()));
+            e.printStackTrace();
+        }
 
     }
 }
