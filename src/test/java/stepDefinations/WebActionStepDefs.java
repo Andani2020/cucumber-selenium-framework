@@ -4,16 +4,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.asynchttpclient.util.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.pageObjects.HomePageObjects;
-
-import java.text.MessageFormat;
-
+import org.selenium.framework.pageobjects.HomePageObjects;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
+import java.text.MessageFormat;
 public class WebActionStepDefs {
 
     private static final Logger logger = LogManager.getLogger(WebActionStepDefs.class);

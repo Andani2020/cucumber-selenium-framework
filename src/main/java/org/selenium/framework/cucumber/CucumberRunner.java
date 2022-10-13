@@ -1,4 +1,4 @@
-package org.cucumber;
+package org.selenium.framework.cucumber;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        glue = {"org.kineticskunk.framework.stepdefinitions"},
+        glue = {"org.selenium.framework.stepdefinitions"},
         features = {"src/test/resources/features"},
         dryRun = false,
         plugin = {
